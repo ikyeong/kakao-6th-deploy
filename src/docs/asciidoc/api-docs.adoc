@@ -1,5 +1,5 @@
 = 카카오 쇼핑하기 RestAPI
-Metacoding <getinthere@naver.com>
+김이경 <grindabff@pusan.ac.kr>
 
 ifndef::snippets[]
 :snippets: ./build/generated-snippets
@@ -7,6 +7,8 @@ endif::[]
 
 :product: product-rest-controller-test
 :cart: cart-rest-controller-test
+:order: order-rest-controller-test
+:user: user-rest-controller-test
 
 :toc: left
 :toclevels: 2
@@ -59,3 +61,111 @@ include::{snippets}/{cart}/update_test/http-request.adoc[]
 
 ==== 응답 예시
 include::{snippets}/{cart}/update_test/response-body.adoc[]
+
+== 주문
+
+=== 결재하기
+
+==== 요청 예시
+include::{snippets}/{order}/save_test/http-request.adoc[]
+
+==== 응답 예시
+include::{snippets}/{order}/save_test/response-body.adoc[]
+
+=== 주문 조회
+
+==== 요청 예시
+include::{snippets}/{order}/find-by-id_test/http-request.adoc[]
+
+==== 응답 예시
+include::{snippets}/{order}/find-by-id_test/response-body.adoc[]
+
+== 유저
+
+=== 이메일 중복 확인
+
+==== 요청 예시
+include::{snippets}/{user}/email-check_test/http-request.adoc[]
+
+==== 응답 예시
+include::{snippets}/{user}/email-check_test/response-body.adoc[]
+
+=== 이메일 중복 확인 실패 예시 1 : 동일 이메일 존재 오류
+
+==== 요청 예시
+include::{snippets}/{user}/email-check_fail_test1/http-request.adoc[]
+
+==== 응답 예시
+include::{snippets}/{user}/email-check_fail_test1/response-body.adoc[]
+
+=== 이메일 중복 확인 실패 예시 2 : 이메일 형식 오류
+
+==== 요청 예시
+include::{snippets}/{user}/email-check_fail_test2/http-request.adoc[]
+
+==== 응답 예시
+include::{snippets}/{user}/email-check_fail_test2/response-body.adoc[]
+
+=== 회원가입
+
+==== 요청 예시
+include::{snippets}/{user}/join_test/http-request.adoc[]
+
+==== 응답 예시
+include::{snippets}/{user}/join_test/response-body.adoc[]
+
+=== 회원가입 실패 예시 1 : 이메일 형식 오류
+
+==== 요청 예시
+include::{snippets}/{user}/join_fail_test1/http-request.adoc[]
+
+==== 응답 예시
+include::{snippets}/{user}/join_fail_test1/response-body.adoc[]
+
+=== 회원가입 실패 예시 2 : 동일 이메일 존재 오류
+
+==== 요청 예시
+include::{snippets}/{user}/join_fail_test2/http-request.adoc[]
+
+==== 응답 예시
+include::{snippets}/{user}/join_fail_test2/response-body.adoc[]
+
+=== 회원가입 실패 예시 3 : 비밀번호 형식 오류
+
+==== 요청 예시
+include::{snippets}/{user}/join_fail_test3/http-request.adoc[]
+
+==== 응답 예시
+include::{snippets}/{user}/join_fail_test3/response-body.adoc[]
+
+=== 회원가입 실패 예시 4 : 비밀번호 길이 오류
+
+==== 요청 예시
+include::{snippets}/{user}/join_fail_test4/http-request.adoc[]
+
+==== 응답 예시
+include::{snippets}/{user}/join_fail_test4/response-body.adoc[]
+
+=== 로그인
+
+==== 요청 예시
+include::{snippets}/{user}/login_test/http-request.adoc[]
+
+==== 응답 예시
+include::{snippets}/{user}/login_test/response-body.adoc[]
+
+=== 로그인 실패 예시 1 : 이메일 찾기 오류
+
+==== 요청 예시
+include::{snippets}/{user}/login_fail_test1/http-request.adoc[]
+
+==== 응답 예시
+include::{snippets}/{user}/login_fail_test1/response-body.adoc[]
+
+=== 로그인 실패 예시 2 : 비밀번호 불일치 오류
+
+==== 요청 예시
+include::{snippets}/{user}/login_fail_test2/http-request.adoc[]
+
+==== 응답 예시
+include::{snippets}/{user}/login_fail_test2/response-body.adoc[]

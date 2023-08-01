@@ -21,19 +21,33 @@ public class CartService {
     @Transactional
     public void addCartList(List<CartRequest.SaveDTO> requestDTOs, User sessionUser) {
         // 1. 동일한 옵션이 들어오면 예외처리
-        // [ { optionId:1, quantity:5 }, { optionId:1, quantity:10 } ]
+        if (requestDTOs.size() != requestDTOs.stream()
+                .map(CartRequest.SaveDTO::getOptionId)
+                .distinct()
+                .count()){
+            throw new Exception404("동일한 옵션아이디가 요청되었습니다 ");
+        }
 
-        // 2. cartJPARepository.findByOptionIdAndUserId() 조회 -> 존재하면 장바구니에 수량을 추가하는 업데이트를 해야함. (더티체킹하기)
-
-        // 3. [2번이 아니라면] 유저의 장바구니에 담기
         for (CartRequest.SaveDTO requestDTO : requestDTOs) {
             int optionId = requestDTO.getOptionId();
             int quantity = requestDTO.getQuantity();
-            Option optionPS = optionJPARepository.findById(optionId)
-                    .orElseThrow(() -> new Exception404("해당 옵션을 찾을 수 없습니다 : " + optionId));
-            int price = optionPS.getPrice() * quantity;
-            Cart cart = Cart.builder().user(sessionUser).option(optionPS).quantity(quantity).price(price).build();
-            cartJPARepository.save(cart);
+            int userId = sessionUser.getId();
+
+            Cart cart = cartJPARepository.findByOptionIdAndUserId(optionId, userId).orElse(null);
+            if (cart != null){
+                // 2. cartJPARepository.findByOptionIdAndUserId() 조회 -> 존재하면 장바구니에 수량을 추가하는 업데이트를 해야함. (더티체킹하기)
+                Option optionPS = optionJPARepository.findById(optionId)
+                        .orElseThrow(()->new Exception404("해당 옵션을 찾을 수 없습니다 :"+optionId));
+                cart.update(cart.getQuantity() + quantity, cart.getPrice() + optionPS.getPrice() * quantity);
+            }else {
+                // 3. [2번이 아니라면] 유저의 장바구니에 담기
+                Option optionPS = optionJPARepository.findById(optionId)
+                        .orElseThrow(() -> new Exception404("해당 옵션을 찾을 수 없습니다 :" + optionId));
+                int price = optionPS.getPrice() * quantity;
+                cart = Cart.builder().user(sessionUser).option(optionPS).quantity(quantity).price(price)
+                        .build();
+                cartJPARepository.save(cart);
+            }
         }
     }
 
@@ -51,22 +65,30 @@ public class CartService {
     @Transactional
     public CartResponse.UpdateDTO update(List<CartRequest.UpdateDTO> requestDTOs, User user) {
         List<Cart> cartList = cartJPARepository.findAllByUserId(user.getId());
-
         // 1. 유저 장바구니에 아무것도 없으면 예외처리
-
+        if (cartList.isEmpty()){
+            throw new Exception404("장바구니가 비어있습니다 ");
+        }
         // 2. cartId:1, cartId:1 이렇게 requestDTOs에 동일한 장바구니 아이디가 두번 들어오면 예외처리
+        if (requestDTOs.size() != requestDTOs.stream()
+                .map(CartRequest.UpdateDTO::getCartId)
+                .distinct()
+                .count()){
+            throw new Exception404("동일한 카트아이디가 요청되었습니다 ");
+        }
 
-        // 3. 유저 장바구니에 없는 cartId가 들어오면 예외처리
-
-        // 위에 3개를 처리하지 않아도 프로그램은 잘돌아간다. 예를 들어 1번을 처리하지 않으면 for문을 돌지 않고, cartList가 빈배열 []로 정상응답이 나감.
-        for (Cart cart : cartList) {
-            for (CartRequest.UpdateDTO updateDTO : requestDTOs) {
-                if (cart.getId() == updateDTO.getCartId()) {
+        for (CartRequest.UpdateDTO updateDTO : requestDTOs){
+            // 3. 유저 장바구니에 없는 cartId가 들어오면 예외처리 장바구니에 담겨 있는 데이터 아래와 같이 요청이 되면 예외가 나와야 한다.
+            if (cartList.stream().noneMatch((c) -> c.getId() == updateDTO.getCartId())){
+                throw new Exception404("해당 카트아이템을 찾을 수 없습니다 :" + updateDTO.getCartId());
+            }
+            // 4. 장바구니 수정
+            for (Cart cart : cartList){
+                if (cart.getId() == updateDTO.getCartId()){
                     cart.update(updateDTO.getQuantity(), cart.getOption().getPrice() * updateDTO.getQuantity());
                 }
             }
         }
-
         return new CartResponse.UpdateDTO(cartList);
-    } // 더티체킹
+    }
 }

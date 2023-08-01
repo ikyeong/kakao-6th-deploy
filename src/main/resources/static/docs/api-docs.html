@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<meta name="author" content="Metacoding">
+<meta name="author" content="김이경">
 <title>카카오 쇼핑하기 RestAPI</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -441,8 +441,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>카카오 쇼핑하기 RestAPI</h1>
 <div class="details">
-<span id="author" class="author">Metacoding</span><br>
-<span id="email" class="email"><a href="mailto:getinthere@naver.com">getinthere@naver.com</a></span><br>
+<span id="author" class="author">김이경</span><br>
+<span id="email" class="email"><a href="mailto:grindabff@pusan.ac.kr">grindabff@pusan.ac.kr</a></span><br>
 <span id="revnumber">version 1.0</span>
 </div>
 </div>
@@ -752,11 +752,486 @@ Host: localhost:8080
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_주문">주문</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_결재하기">결재하기</h3>
+<div class="sect3">
+<h4 id="_요청_예시_6">요청 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /orders/save HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_예시_6">응답 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "success" : true,
+  "response" : {
+    "id" : 2,
+    "products" : [ {
+      "productName" : "기본에 슬라이딩 지퍼백 크리스마스/플라워에디션 에디션 외 주방용품 특가전",
+      "items" : [ {
+        "id" : 4,
+        "optionName" : "01. 슬라이딩 지퍼백 크리스마스에디션 4종",
+        "quantity" : 5,
+        "price" : 50000
+      }, {
+        "id" : 5,
+        "optionName" : "02. 슬라이딩 지퍼백 플라워에디션 5종",
+        "quantity" : 1,
+        "price" : 10900
+      } ]
+    }, {
+      "productName" : "바른 누룽지맛 발효효소 2박스 역가수치보장 / 외 7종",
+      "items" : [ {
+        "id" : 6,
+        "optionName" : "선택02_바른곡물효소누룽지맛 6박스",
+        "quantity" : 5,
+        "price" : 250000
+      } ]
+    } ],
+    "totalPrice" : 310900
+  },
+  "error" : null
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_주문_조회">주문 조회</h3>
+<div class="sect3">
+<h4 id="_요청_예시_7">요청 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /orders/1 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_예시_7">응답 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "success" : true,
+  "response" : {
+    "id" : 1,
+    "products" : [ {
+      "productName" : "기본에 슬라이딩 지퍼백 크리스마스/플라워에디션 에디션 외 주방용품 특가전",
+      "items" : [ {
+        "id" : 1,
+        "optionName" : "01. 슬라이딩 지퍼백 크리스마스에디션 4종",
+        "quantity" : 5,
+        "price" : 50000
+      }, {
+        "id" : 2,
+        "optionName" : "02. 슬라이딩 지퍼백 플라워에디션 5종",
+        "quantity" : 1,
+        "price" : 10900
+      } ]
+    }, {
+      "productName" : "바른 누룽지맛 발효효소 2박스 역가수치보장 / 외 7종",
+      "items" : [ {
+        "id" : 3,
+        "optionName" : "선택02_바른곡물효소누룽지맛 6박스",
+        "quantity" : 5,
+        "price" : 250000
+      } ]
+    } ],
+    "totalPrice" : 310900
+  },
+  "error" : null
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_유저">유저</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_이메일_중복_확인">이메일 중복 확인</h3>
+<div class="sect3">
+<h4 id="_요청_예시_8">요청 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /check HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 37
+Host: localhost:8080
+
+{
+  "email" : "ikyeong@naver.com"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_예시_8">응답 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "success" : true,
+  "response" : null,
+  "error" : null
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_이메일_중복_확인_실패_예시_1_동일_이메일_존재_오류">이메일 중복 확인 실패 예시 1 : 동일 이메일 존재 오류</h3>
+<div class="sect3">
+<h4 id="_요청_예시_9">요청 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /check HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 38
+Host: localhost:8080
+
+{
+  "email" : "ssarmango@nate.com"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_예시_9">응답 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "success" : false,
+  "response" : null,
+  "error" : {
+    "message" : "동일한 이메일이 존재합니다 : ssarmango@nate.com",
+    "status" : 400
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_이메일_중복_확인_실패_예시_2_이메일_형식_오류">이메일 중복 확인 실패 예시 2 : 이메일 형식 오류</h3>
+<div class="sect3">
+<h4 id="_요청_예시_10">요청 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /check HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 37
+Host: localhost:8080
+
+{
+  "email" : "ssarmangonate.com"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_예시_10">응답 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "success" : false,
+  "response" : null,
+  "error" : {
+    "message" : "이메일 형식으로 작성해주세요:email",
+    "status" : 400
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_회원가입">회원가입</h3>
+<div class="sect3">
+<h4 id="_요청_예시_11">요청 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /join HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 100
+Host: localhost:8080
+
+{
+  "email" : "ikyeong@naver.com",
+  "password" : "password1234!",
+  "username" : "kimikyeong"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_예시_11">응답 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "success" : true,
+  "response" : null,
+  "error" : null
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_회원가입_실패_예시_1_이메일_형식_오류">회원가입 실패 예시 1 : 이메일 형식 오류</h3>
+<div class="sect3">
+<h4 id="_요청_예시_12">요청 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /join HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 99
+Host: localhost:8080
+
+{
+  "email" : "ikyeongnaver.com",
+  "password" : "password1234!",
+  "username" : "kimikyeong"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_예시_12">응답 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "success" : false,
+  "response" : null,
+  "error" : {
+    "message" : "이메일 형식으로 작성해주세요:email",
+    "status" : 400
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_회원가입_실패_예시_2_동일_이메일_존재_오류">회원가입 실패 예시 2 : 동일 이메일 존재 오류</h3>
+<div class="sect3">
+<h4 id="_요청_예시_13">요청 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /join HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 101
+Host: localhost:8080
+
+{
+  "email" : "ssarmango@nate.com",
+  "password" : "password1234!",
+  "username" : "kimikyeong"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_예시_13">응답 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "success" : false,
+  "response" : null,
+  "error" : {
+    "message" : "동일한 이메일이 존재합니다 : ssarmango@nate.com",
+    "status" : 400
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_회원가입_실패_예시_3_비밀번호_형식_오류">회원가입 실패 예시 3 : 비밀번호 형식 오류</h3>
+<div class="sect3">
+<h4 id="_요청_예시_14">요청 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /join HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 99
+Host: localhost:8080
+
+{
+  "email" : "ikyeong@naver.com",
+  "password" : "password1234",
+  "username" : "kimikyeong"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_예시_14">응답 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "success" : false,
+  "response" : null,
+  "error" : {
+    "message" : "영문, 숫자, 특수문자가 포함되어야하고 공백이 포함될 수 없습니다.:password",
+    "status" : 400
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_회원가입_실패_예시_4_비밀번호_길이_오류">회원가입 실패 예시 4 : 비밀번호 길이 오류</h3>
+<div class="sect3">
+<h4 id="_요청_예시_15">요청 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /join HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 92
+Host: localhost:8080
+
+{
+  "email" : "ssarmango@naver.com",
+  "password" : "a1!",
+  "username" : "kimikyeong"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_예시_15">응답 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "success" : false,
+  "response" : null,
+  "error" : {
+    "message" : "8에서 20자 이내여야 합니다.:password",
+    "status" : 400
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_로그인">로그인</h3>
+<div class="sect3">
+<h4 id="_요청_예시_16">요청 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /login HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 67
+Host: localhost:8080
+
+{
+  "email" : "ssarmango@nate.com",
+  "password" : "meta1234!"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_예시_16">응답 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "success" : true,
+  "response" : null,
+  "error" : null
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_로그인_실패_예시_1_이메일_찾기_오류">로그인 실패 예시 1 : 이메일 찾기 오류</h3>
+<div class="sect3">
+<h4 id="_요청_예시_17">요청 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /login HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 68
+Host: localhost:8080
+
+{
+  "email" : "ssarmango1@nate.com",
+  "password" : "meta1234!"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_예시_17">응답 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "success" : false,
+  "response" : null,
+  "error" : {
+    "message" : "이메일을 찾을 수 없습니다 : ssarmango1@nate.com",
+    "status" : 400
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_로그인_실패_예시_2_비밀번호_불일치_오류">로그인 실패 예시 2 : 비밀번호 불일치 오류</h3>
+<div class="sect3">
+<h4 id="_요청_예시_18">요청 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /login HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 68
+Host: localhost:8080
+
+{
+  "email" : "ssarmango@nate.com",
+  "password" : "meta1234!!"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_예시_18">응답 예시</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "success" : false,
+  "response" : null,
+  "error" : {
+    "message" : "패스워드가 잘못입력되었습니다 ",
+    "status" : 400
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2023-07-24 01:15:46 +0900
+Last updated 2023-08-01 21:07:50 +0900
 </div>
 </div>
 </body>

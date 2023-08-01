@@ -1,6 +1,7 @@
 package com.example.kakao.product;
 
 import com.example.kakao.MyRestDoc;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ProductRestControllerTest extends MyRestDoc {
 
     @Test
+    @DisplayName("전체 상품 조회 테스트")
     public void findAll_test() throws Exception {
         // given teardown.sql
 
@@ -44,6 +46,7 @@ public class ProductRestControllerTest extends MyRestDoc {
     }
 
     @Test
+    @DisplayName("상품 상세 조회 테스트")
     public void findById_test() throws Exception {
         // given teardown.sql
         int id = 1;

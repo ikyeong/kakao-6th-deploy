@@ -2,6 +2,7 @@ package com.example.kakao.cart;
 
 import com.example.kakao.MyRestDoc;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -32,6 +33,7 @@ public class CartRestControllerTest extends MyRestDoc {
 
     @WithUserDetails(value = "ssarmango@nate.com")
     @Test
+    @DisplayName("카트 담기 테스트")
     public void addCartList_test() throws Exception {
         // given -> optionId [1,2,16]이 teardown.sql을 통해 들어가 있음
         List<CartRequest.SaveDTO> requestDTOs = new ArrayList<>();
@@ -49,8 +51,8 @@ public class CartRestControllerTest extends MyRestDoc {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
         );
 
-        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
-        System.out.println("테스트 : " + responseBody);
+//        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+//        System.out.println("테스트 : " + responseBody);
 
         // verify
         resultActions.andExpect(jsonPath("$.success").value("true"));
@@ -59,6 +61,7 @@ public class CartRestControllerTest extends MyRestDoc {
 
     @WithUserDetails(value = "ssarmango@nate.com")
     @Test
+    @DisplayName("카트 조회 테스트")
     public void findAll_test() throws Exception {
         // given teardown
 
@@ -67,9 +70,9 @@ public class CartRestControllerTest extends MyRestDoc {
                 get("/carts")
         );
 
-        // eye
-        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
-        System.out.println("테스트 : " + responseBody);
+//        // eye
+//        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+//        System.out.println("테스트 : " + responseBody);
 
         // verify
         resultActions.andExpect(jsonPath("$.success").value("true"));
@@ -87,6 +90,7 @@ public class CartRestControllerTest extends MyRestDoc {
 
     @WithUserDetails(value = "ssarmango@nate.com")
     @Test
+    @DisplayName("카트 수정 테스트")
     public void update_test() throws Exception {
         // given -> cartId [1번 5개,2번 1개,3번 5개]가 teardown.sql을 통해 들어가 있음
         List<CartRequest.UpdateDTO> requestDTOs = new ArrayList<>();
@@ -104,9 +108,9 @@ public class CartRestControllerTest extends MyRestDoc {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
         );
 
-        // eye
-        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
-        System.out.println("테스트 : " + responseBody);
+//        // eye
+//        String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+//        System.out.println("테스트 : " + responseBody);
 
         // verify
         resultActions.andExpect(jsonPath("$.success").value("true"));
